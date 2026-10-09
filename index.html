@@ -521,6 +521,78 @@ const RESOURCES = [
 ];
 
 // ═══════════════════════════════════════════════════
+//  HELPERS
+// ═══════════════════════════════════════════════════
+
+function avatarColor(name) {
+  let hash = 0;
+  for (let i = 0; i < name.length; i++) hash = name.charCodeAt(i) + ((hash << 5) - hash);
+  const hue = Math.abs(hash) % 360;
+  return `hsl(${hue},38%,58%)`;
+}
+
+function initials(name) {
+  const p = name.trim().split(/\s+/);
+  return p.length >= 2 ? (p[0][0] + p[p.length-1][0]).toUpperCase() : name.slice(0,2).toUpperCase();
+}
+
+function esc(s) {
+  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// ═══════════════════════════════════════════════════
+//  RENDER MEMBERS
+// ═══════════════════════════════════════════════════
+
+function renderMembers() {
+  const grid = document.getElementById('members-grid');
+  document.getElementById('member-count').textContent = MEMBERS.length;
+  if (!MEMBERS.length) {
+    grid.innerHTML = `<div style="text-align:center;padding:48px 24px;color:var(--fg-soft);grid-column:1/-1"><div style="font-size:2.5rem;margin-bottom:12px;">🌱</div><p style="font-size:14px;max-width:260px;margin:0 auto;line-height:1.6;">No one has introduced themselves yet.</p></div>`;
+    return;
+  }
+  grid.innerHTML = MEMBERS.map(d => `
+    <div class="member-card${d.tag==='instructor'?' is-staff':''}">
+      <div class="member-avatar" style="background:${avatarColor(d.name)}">${initials(d.name)}</div>
+      <div class="member-name">${esc(d.name)}</div>
+      ${d.role ? `<div class="member-role">${esc(d.role)}</div>` : ''}
+      ${d.location ? `<div class="member-meta">📍 ${esc(d.location)}</div>` : ''}
+      ${d.why ? `<div class="member-why">${esc(d.why)}</div>` : ''}
+      ${d.contact ? `<div class="member-meta">✉️ ${esc(d.contact)}</div>` : ''}
+      ${d.extra ? `<div class="member-extra">${esc(d.extra)}</div>` : ''}
+      ${d.privacy ? `<div class="member-privacy">${esc(d.privacy)}</div>` : ''}
+    </div>`).join('');
+}
+
+// ═══════════════════════════════════════════════════
+//  RENDER RESOURCES
+// ═══════════════════════════════════════════════════
+
+function renderResources() {
+  const list = document.getElementById('resource-list');
+  document.getElementById('resource-count').textContent = RESOURCES.length;
+  if (!RESOURCES.length) { list.innerHTML = ''; return; }
+  const byWeek = {};
+  RESOURCES.forEach(r => {
+    const w = r.week || 0;
+    if (!byWeek[w]) byWeek[w] = [];
+    byWeek[w].push(r);
+  });
+  const weeks = Object.keys(byWeek).sort((a,b) => b - a);
+  list.innerHTML = weeks.map(w => `
+    <div class="week-group">
+      <div class="week-label">Week ${w}</div>
+      ${byWeek[w].map(r => `
+        <div class="resource-card">
+          <div class="resource-title">${r.url ? `<a href="${esc(r.url)}" target="_blank" rel="noopener">${esc(r.title)}</a>` : esc(r.title)}</div>
+          ${r.type ? `<span class="resource-type">${esc(r.type)}</span>` : ''}
+          ${r.note ? `<div class="resource-note">${esc(r.note)}</div>` : ''}
+          ${r.from ? `<div class="resource-from">Shared by ${esc(r.from)}</div>` : ''}
+        </div>`).join('')}
+    </div>`).join('');
+}
+
+// ═══════════════════════════════════════════════════
 //  PILL NAV (resources tab)
 // ═══════════════════════════════════════════════════
 document.querySelectorAll('.pill-btn').forEach(btn => {
