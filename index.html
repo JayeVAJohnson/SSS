@@ -102,22 +102,6 @@ body{margin:0;padding-inline:0;background:var(--bg);color:var(--fg);font-family:
 .pill-bar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px;}
 .pill-btn{background:var(--bg-card);border:1px solid var(--border);border-radius:20px;padding:5px 14px;font-family:var(--font-body);font-size:12px;font-weight:500;color:var(--fg-mid);cursor:pointer;transition:all .15s;}
 .pill-btn:hover,.pill-btn.active{background:var(--accent-bg);border-color:var(--accent);color:var(--accent-dk);}
-
-/* ── Ponder article ── */
-.ponder-article{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:24px 26px;box-shadow:var(--shadow);display:none;}
-.ponder-article.open{display:block;}
-.ponder-header{margin-bottom:18px;padding-bottom:14px;border-bottom:1px solid var(--border);}
-.ponder-title{font-family:var(--font-display);font-size:1.5rem;font-weight:600;line-height:1.2;color:var(--fg);margin:0 0 4px;}
-.ponder-byline{font-size:12px;color:var(--fg-soft);letter-spacing:.04em;}
-.ponder-body h2{font-family:var(--font-display);font-size:1.15rem;font-weight:400;color:var(--fg);margin:1.4em 0 .4em;}
-.ponder-body p{font-size:14px;line-height:1.7;color:var(--fg-mid);margin:0 0 .9em;}
-.ponder-body ul{padding-left:1.2em;margin:0 0 .9em;}
-.ponder-body li{font-size:14px;line-height:1.6;color:var(--fg-mid);margin-bottom:.3em;}
-.ponder-body table{width:100%;border-collapse:collapse;font-size:13px;margin:1em 0;overflow-x:auto;display:block;}
-.ponder-body th{background:var(--accent-bg);color:var(--accent-dk);font-weight:600;padding:8px 12px;text-align:left;border-bottom:2px solid var(--border);}
-.ponder-body td{padding:7px 12px;border-bottom:1px solid var(--border);color:var(--fg-mid);vertical-align:top;}
-.ponder-body tr:last-child td{border-bottom:none;}
-
 .sidebar{padding:28px 22px 60px;background:var(--bg);overflow-x:hidden;}
 @media(max-width:860px){.sidebar{padding:0 16px 40px;border-top:1px solid var(--border);}}
 
@@ -232,22 +216,12 @@ body{margin:0;padding-inline:0;background:var(--bg);color:var(--fg);font-family:
       <!-- Pill navigation -->
       <div class="pill-bar">
         <button class="pill-btn active" data-pill="all">All</button>
-        <button class="pill-btn" data-pill="ponder">To Ponder</button>
       </div>
 
       <div id="pill-all">
         <div class="resource-list" id="resource-list"></div>
       </div>
 
-      <div id="pill-ponder" style="display:none;">
-        <div class="ponder-article open">
-          <div class="ponder-header">
-            <p class="ponder-title">Thoughts on Music</p>
-            <p class="ponder-byline">Jaye Johnson</p>
-          </div>
-          <div class="ponder-body" id="ponder-body"></div>
-        </div>
-      </div>
     </div>
 
 
@@ -547,122 +521,6 @@ const RESOURCES = [
 ];
 
 // ═══════════════════════════════════════════════════
-//  PONDER — "Thoughts on Music" essay
-// ═══════════════════════════════════════════════════
-const PONDER_HTML = `
-<h2>Beyond the Sitar: How Yoga Music Broke the Mold</h2>
-<p>When you picture the soundtrack to a yoga class, your mind likely drifts to a specific sonic landscape — the gentle trickle of a digital waterfall, the resonant hum of a Tibetan singing bowl, or the soothing drones of artists like Enya or Deva Premal. For decades, this "New Age" aesthetic was the undisputed industry standard: the sonic shorthand for spiritual alignment and inner peace.</p>
-<p>But today, the yoga studio sounds radically different. As the ancient practice has adapted to modern subcultures, its music has undergone a massive evolution. From the heavy bass of hip-hop to the dark synths of goth culture, yoga music is no longer confined to a single genre. It has become a dynamic, customizable tool for self-expression — proof that you don't need traditional ambient tracks to find your zen.</p>
-<h2>Why Music Matters in Yoga</h2>
-<p>In traditional yoga philosophy, sound is a powerful vehicle for transformation. The concept of Nada Yoga — the yoga of sound — suggests that specific frequencies can alter our state of consciousness and help focus the mind.</p>
-<p>In a modern vinyasa or power yoga class, music serves several practical and psychological functions:</p>
-<ul>
-<li><strong>Entrainment:</strong> The human body naturally syncs its heart rate and breathing to the rhythm of external sounds. Faster beats can energize a sequence, while slowing the tempo guides the body into deep relaxation.</li>
-<li><strong>Distraction Management:</strong> A well-curated playlist drowns out internal monologue and external noises, helping practitioners stay anchored in the present moment.</li>
-<li><strong>Emotional Release:</strong> Music taps directly into the nervous system. By pairing physical movement with resonant melodies, yoga can help release trapped emotional stress.</li>
-</ul>
-<h2>The Rise of Subgenre Yoga</h2>
-<p>Yoga's modern evolution is defined by accessibility. By shedding strict traditionalism, teachers have created niche spaces where people can connect with the practice through their own cultural lens.</p>
-<p><strong>Hip-Hop Yoga</strong> — Pioneered by studios like Y7 in New York and Los Angeles, hip-hop yoga replaces traditional chanting with tracks from artists like Drake, Kendrick Lamar, and Cardo. The deep sub-bass and heavy 808 beats provide a powerful, grounding rhythm that matches the intensity of power vinyasa.</p>
-<p><strong>Goth Yoga</strong> — Set to atmospheric drones of doom metal, dark wave, or post-punk, these classes embrace themes of darkness, shadow work, and catharsis. The heavy, slow tempos mirror the deliberate holds of a deep yin practice.</p>
-<p><strong>Goat Yoga</strong> — Even the viral phenomenon of goat yoga uses music to set a lighthearted, communal tone. Instead of meditative tracks, these classes often feature upbeat indie-pop, acoustic folk, or classic rock. The goal isn't a trance, but joy and stress relief.</p>
-<h2>The Sonic Anatomy: Traditional vs. Modern</h2>
-<table>
-<thead><tr><th>Moment</th><th>Traditional</th><th>Modern</th></tr></thead>
-<tbody>
-<tr><td>Opening / Centering</td><td>Gentle drone, sitar, soft nature sounds</td><td>Ambient instrumentals, slow lo-fi, dark cinematic pads</td></tr>
-<tr><td>The Warm-Up</td><td>Mid-tempo Sanskrit mantras or acoustic guitar</td><td>Mid-tempo grooves, classic R&amp;B, atmospheric indie</td></tr>
-<tr><td>The Peak (Vinyasa)</td><td>Rhythmic drumming or faster world-fusion tracks</td><td>Heavy 808 basslines, driving electronic beats, rock crescendos</td></tr>
-<tr><td>The Cool Down</td><td>Slower, melodic chants or solo piano</td><td>Chopped instrumentals, dream-pop, ambient synth-wave</td></tr>
-<tr><td>Savasana</td><td>Total silence or a faint, unchanging ambient drone</td><td>Minimalist instrumentals, rain tracks, soft lyric-free melodies</td></tr>
-</tbody>
-</table>
-<h2>Finding Your Own Rhythm</h2>
-<p>The diversification of yoga music proves an essential truth about the practice: yoga is an internal experience. If traditional sitar music makes you feel disconnected or restless, it isn't serving your practice.</p>
-<p>True mindfulness is about presence and authenticity. If flowing to a heavy bassline, a moody post-punk track, or the laughter of a room filled with baby goats helps you drop into your body and breathe — then that is exactly what your yoga music should be.</p>
-`;
-
-// ═══════════════════════════════════════════════════
-//  RENDERING
-// ═══════════════════════════════════════════════════
-
-const AVATAR_COLORS = ['#9370db','#ba9edd','#c9a87c','#7bbf9e','#d4899a','#6baed6','#b39ddb','#88b04b'];
-const RESOURCE_ICONS = {meditation:'🧘',playlist:'🎵',article:'📄',video:'▶',other:'✦'};
-
-function avatarColor(name) {
-  let h = 0;
-  for (let i = 0; i < name.length; i++) h = (h * 31 + name.charCodeAt(i)) & 0xffffffff;
-  return AVATAR_COLORS[Math.abs(h) % AVATAR_COLORS.length];
-}
-function initials(name) {
-  const p = name.trim().split(/\s+/);
-  return p.length === 1 ? p[0].slice(0,2).toUpperCase() : (p[0][0]+p[p.length-1][0]).toUpperCase();
-}
-function esc(s) {
-  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-}
-function shortUrl(url) {
-  try { const u=new URL(url); let s=u.hostname.replace(/^www\./,'')+u.pathname; return s.length>48?s.slice(0,48)+'…':s; }
-  catch { return url.slice(0,48); }
-}
-
-function renderMembers() {
-  const grid = document.getElementById('members-grid');
-  document.getElementById('member-count').textContent = MEMBERS.length;
-  if (!MEMBERS.length) {
-    grid.innerHTML = `<div style="text-align:center;padding:48px 24px;color:var(--fg-soft);grid-column:1/-1"><div style="font-size:2.5rem;margin-bottom:12px;">🌱</div><p style="font-size:14px;max-width:260px;margin:0 auto;line-height:1.6;">No one has introduced themselves yet.</p></div>`;
-    return;
-  }
-  grid.innerHTML = MEMBERS.map(d => `
-    <div class="member-card${d.tag==='instructor'?' is-staff':''}">
-      <div class="member-avatar" style="background:${avatarColor(d.name)}">${initials(d.name)}</div>
-      <div class="member-name">${esc(d.name)}</div>
-      ${d.role ? `<div class="member-role">${esc(d.role)}</div>` : ''}
-      ${d.location ? `<div class="member-location">📍 ${esc(d.location)}</div>` : ''}
-      ${d.why ? `<div class="member-why">${esc(d.why)}</div>` : ''}
-      ${d.extra ? `<div class="member-extra">${esc(d.extra)}</div>` : ''}
-      ${d.contact ? `<div class="member-contact">✉ <span style="user-select:all">${esc(d.contact)}</span></div>` : ''}
-      ${d.privacy ? `<div class="member-privacy">ℹ ${esc(d.privacy)}</div>` : ''}
-    </div>`).join('');
-}
-
-function renderResources() {
-  const list = document.getElementById('resource-list');
-  document.getElementById('resource-count').textContent = RESOURCES.length;
-  if (!RESOURCES.length) {
-    list.innerHTML = `<div style="text-align:center;padding:48px 24px;color:var(--fg-soft)"><div style="font-size:2.5rem;margin-bottom:12px;">📚</div><p>Nothing shared yet.</p></div>`;
-    return;
-  }
-  // Group by week, most recent week first
-  const weeks = {};
-  RESOURCES.forEach(d => {
-    const w = d.week || 0;
-    if (!weeks[w]) weeks[w] = [];
-    weeks[w].push(d);
-  });
-  const sortedWeeks = Object.keys(weeks).map(Number).sort((a, b) => b - a);
-  const cardHtml = d => `
-    <div class="resource-card">
-      <div class="resource-type-icon ${d.type||'other'}">${RESOURCE_ICONS[d.type]||'✦'}</div>
-      <div class="resource-body">
-        <div class="resource-title">${esc(d.title)}</div>
-        ${d.from ? `<div class="resource-meta">Shared by ${esc(d.from)}</div>` : ''}
-        ${d.note ? `<div class="resource-note">${esc(d.note)}</div>` : ''}
-        ${d.url ? `<a class="resource-link" href="${esc(d.url)}" target="_blank" rel="noopener noreferrer">${esc(shortUrl(d.url))}</a>` : ''}
-      </div>
-    </div>`;
-  list.innerHTML = sortedWeeks.map(w =>
-    `<div class="week-group">
-      <div class="week-heading">Week ${w}</div>
-      ${weeks[w].map(cardHtml).join('')}
-    </div>`
-  ).join('');
-}
-
-// populate ponder
-document.getElementById('ponder-body').innerHTML = PONDER_HTML;
-
-// ═══════════════════════════════════════════════════
 //  PILL NAV (resources tab)
 // ═══════════════════════════════════════════════════
 document.querySelectorAll('.pill-btn').forEach(btn => {
@@ -671,7 +529,6 @@ document.querySelectorAll('.pill-btn').forEach(btn => {
     btn.classList.add('active');
     const p = btn.dataset.pill;
     document.getElementById('pill-all').style.display   = p==='all'    ? '' : 'none';
-    document.getElementById('pill-ponder').style.display = p==='ponder' ? '' : 'none';
   });
 });
 
